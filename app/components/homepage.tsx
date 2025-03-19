@@ -1,7 +1,6 @@
 "use client";
-import { DarkThemeToggle } from "flowbite-react";
-import { Alert } from "flowbite-react";
 import { useEffect, useState } from "react";
+import NavigationBar from "../common/components/NavigationBar";
 
 export function Homepage() {
   const [accessToken, setAccessToken] = useState("");
@@ -15,7 +14,10 @@ export function Homepage() {
       body: JSON.stringify({ accessToken }),
     });
     const result = await response.json();
-    console.log(result);
+    if (result.error) {
+      localStorage.removeItem("access_token");
+      window.location.href = "/login";
+    }
   };
   useEffect(() => {
     if (accessToken) {
@@ -27,9 +29,7 @@ export function Homepage() {
   }
   return (
     <main className="flex min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-      <h1 className="text-2xl dark:text-white">Flowbite React + Next.js</h1>
-      <DarkThemeToggle />
-      <Alert color={"info"}>This is a blue alert</Alert>
+      <NavigationBar />
     </main>
   );
 }

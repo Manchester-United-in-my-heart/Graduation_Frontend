@@ -381,6 +381,7 @@ const PageInProject = ({ imageUrl, boxes, projectId, pageId }) => {
                 </p>
                 <div id={`existed-box-${index}`}>
                   <input
+                    className="border border-black p-2"
                     onChange={() => {
                       handleExistingWordChange(index);
                     }}

@@ -23,6 +23,7 @@ export default function Login() {
     const result = await response.json();
     if (result.access_token) {
       localStorage.setItem("access_token", result.access_token);
+      window.location.href = "/";
     } else {
       alert("Invalid credentials");
     }

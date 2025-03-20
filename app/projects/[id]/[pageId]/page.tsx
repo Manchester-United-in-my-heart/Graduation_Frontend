@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PageInProject from "./components/Page";
 import Paginator from "./components/Paginator";
+import NavigationBar from "@/app/common/components/NavigationBar";
 
 const Page = () => {
   const params = useParams();
@@ -34,25 +35,23 @@ const Page = () => {
   }, []);
 
   return (
-    <>
-      {imageLink && otherPages && rawResult ? (
-        <div>
-          <Paginator
-            projectId={parseInt(id)}
-            currentPage={parseInt(pageId)}
-            listOfPagesAndId={otherPages}
-          />
-          <PageInProject
-            imageUrl={imageLink}
-            boxes={rawResult}
-            projectId={parseInt(id)}
-            pageId={parseInt(pageId)}
-          />
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
-    </>
+    <div className="flex min-h-screen items-start justify-center gap-2 dark:bg-gray-800">
+      <NavigationBar />
+      <div className="relative top-20 mx-auto w-full max-w-screen-xl p-4">
+        {imageLink && otherPages && rawResult ? (
+          <div>
+            <PageInProject
+              imageUrl={imageLink}
+              boxes={rawResult}
+              projectId={parseInt(id)}
+              pageId={parseInt(pageId)}
+            />
+          </div>
+        ) : (
+          <div>Loading...</div>
+        )}
+      </div>
+    </div>
   );
 };
 

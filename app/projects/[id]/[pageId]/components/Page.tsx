@@ -1,5 +1,6 @@
 "use client";
 
+import FlyonuiScript from "@/app/common/components/FlyonuiScript";
 import { useState, useEffect } from "react";
 import {
   detectWhichLineDoesTheBoxBelongTo,
@@ -361,108 +362,197 @@ const PageInProject = ({ imageUrl, boxes, projectId, pageId }) => {
   };
 
   return (
-    <div className="flex items-start gap-20">
-      <canvas
-        id="canvas"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        style={{ border: "1px solid black" }}
-      />
-      <div>
+    <>
+      <div className="flex items-start gap-20">
+        <canvas
+          id="canvas"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          style={{ border: "1px solid black" }}
+        />
         <div>
-          List of Boxes in Props:
-          <ul>
-            {listOfExistedBoxes.map((box, index) => (
-              <li key={index}>
-                <p>
-                  x: {box.x}, y: {box.y}, width: {box.width}, height:{" "}
-                  {box.height}{" "}
-                </p>
-                <div id={`existed-box-${index}`}>
-                  <input
-                    className="border border-black p-2"
-                    onChange={() => {
-                      handleExistingWordChange(index);
-                    }}
-                    type="text"
-                    value={listOfExistedBoxes[index].word}
-                  />
-                </div>
-                <div>
-                  <button
-                    onClick={() => {
-                      handleDeleteExistedBox(index);
-                    }}
-                  >
-                    Delete Box
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-          {isExistingWordChanged && (
-            <button
-              onClick={() => handleSaveAllExistingBoxes(listOfExistedBoxes)}
-            >
-              Save All Existing Boxes
-            </button>
-          )}
-        </div>
-        <div>
-          List of New Boxes:
-          <ul>
-            {listOfNewBoxes.map((box, index) => (
-              <li key={index}>
-                <div>
+          <div>
+            List of Boxes in Props:
+            <ul>
+              {listOfExistedBoxes.map((box, index) => (
+                <li key={index}>
                   <p>
                     x: {box.x}, y: {box.y}, width: {box.width}, height:{" "}
-                    {box.height}
+                    {box.height}{" "}
                   </p>
-                  <div id={`new-box-${index}`}>
+                  <div id={`existed-box-${index}`}>
                     <input
-                      type="text"
+                      className="border border-black p-2"
                       onChange={() => {
-                        handleNewlyDrawnWordChange(index);
+                        handleExistingWordChange(index);
                       }}
-                      value={box.word}
+                      type="text"
+                      value={listOfExistedBoxes[index].word}
                     />
                   </div>
-
                   <div>
                     <button
                       onClick={() => {
-                        handleDeleteNewlyDrawnBox(index);
+                        handleDeleteExistedBox(index);
                       }}
                     >
                       Delete Box
                     </button>
                   </div>
-                </div>
-              </li>
-            ))}
-            {listOfNewBoxes.length > 0 && (
-              <button onClick={() => handleSaveAllNewBoxes()}>
-                Save All New Boxes
+                </li>
+              ))}
+            </ul>
+            {isExistingWordChanged && (
+              <button
+                onClick={() => handleSaveAllExistingBoxes(listOfExistedBoxes)}
+              >
+                Save All Existing Boxes
               </button>
             )}
-          </ul>
-        </div>
-        <div id="preview">
-          Preview
-          {/* <textarea
+          </div>
+          <div>
+            List of New Boxes:
+            <ul>
+              {listOfNewBoxes.map((box, index) => (
+                <li key={index}>
+                  <div>
+                    <p>
+                      x: {box.x}, y: {box.y}, width: {box.width}, height:{" "}
+                      {box.height}
+                    </p>
+                    <div id={`new-box-${index}`}>
+                      <input
+                        type="text"
+                        onChange={() => {
+                          handleNewlyDrawnWordChange(index);
+                        }}
+                        value={box.word}
+                      />
+                    </div>
+
+                    <div>
+                      <button
+                        onClick={() => {
+                          handleDeleteNewlyDrawnBox(index);
+                        }}
+                      >
+                        Delete Box
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+              {listOfNewBoxes.length > 0 && (
+                <button onClick={() => handleSaveAllNewBoxes()}>
+                  Save All New Boxes
+                </button>
+              )}
+            </ul>
+          </div>
+          <div id="preview">
+            Preview
+            {/* <textarea
             name="preview"
             rows="10"
             cols="50"
             value={previewText}
             readOnly={true}
           /> */}
-        </div>
-        <div>
-          <button onClick={() => handleUpdate()}>Update</button>
+          </div>
+          <div>
+            <button onClick={() => handleUpdate()}>Update</button>
+          </div>
         </div>
       </div>
-    </div>
+      <div className="accordion-shadow accordion">
+        <div
+          className="active accordion-item transition-transform delay-[1ms] duration-300 ease-in accordion-item-active:mb-3 accordion-item-active:scale-105"
+          id="payment-popout"
+        >
+          <button
+            className="accordion-toggle inline-flex items-center gap-x-4 px-5 py-4 text-start"
+            aria-controls="payment-popout-collapse"
+            aria-expanded="true"
+          >
+            <span className="icon-[tabler--plus] block size-4.5 shrink-0 text-base-content accordion-item-active:hidden"></span>
+            <span className="icon-[tabler--minus] hidden size-4.5 shrink-0 text-base-content accordion-item-active:block"></span>
+            When is payment taken for my order?
+          </button>
+          <div
+            id="payment-popout-collapse"
+            className="accordion-content w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="payment-popout"
+            role="region"
+          >
+            <div className="px-5 pb-4">
+              <p className="font-normal text-base-content/80">
+                Payment is taken during the checkout process when you pay for
+                your order. The order number that appears on the confirmation
+                screen indicates payment has been successfully processed.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          className="accordion-item transition-transform delay-[1ms] duration-300 ease-in accordion-item-active:my-3 accordion-item-active:scale-105"
+          id="delivery-popout"
+        >
+          <button
+            className="accordion-toggle inline-flex items-center gap-x-4 px-5 py-4 text-start"
+            aria-controls="delivery-popout-collapse"
+            aria-expanded="false"
+          >
+            <span className="icon-[tabler--plus] block size-4.5 shrink-0 text-base-content accordion-item-active:hidden"></span>
+            <span className="icon-[tabler--minus] hidden size-4.5 shrink-0 text-base-content accordion-item-active:block"></span>
+            How would you ship my order?
+          </button>
+          <div
+            id="delivery-popout-collapse"
+            className="accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="delivery-popout"
+            role="region"
+          >
+            <div className="px-5 pb-4">
+              <p className="font-normal text-base-content/80">
+                For large products, we deliver your product via a third party
+                logistics company offering you the “room of choice” scheduled
+                delivery service. For small products, we offer free parcel
+                delivery.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          className="accordion-item transition-transform delay-[1ms] duration-300 ease-in accordion-item-active:mt-3 accordion-item-active:scale-105"
+          id="cancel-popout"
+        >
+          <button
+            className="accordion-toggle inline-flex items-center gap-x-4 px-5 py-4 text-start"
+            aria-controls="cancel-popout-collapse"
+            aria-expanded="false"
+          >
+            <span className="icon-[tabler--plus] block size-4.5 shrink-0 text-base-content accordion-item-active:hidden"></span>
+            <span className="icon-[tabler--minus] hidden size-4.5 shrink-0 text-base-content accordion-item-active:block"></span>
+            Can I cancel my order?
+          </button>
+          <div
+            id="cancel-popout-collapse"
+            className="accordion-content hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="cancel-popout"
+            role="region"
+          >
+            <div className="px-5 pb-4">
+              <p className="font-normal text-base-content/80">
+                Scheduled delivery orders can be cancelled 72 hours prior to
+                your selected delivery date for full refund.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <FlyonuiScript />
+    </>
   );
 };
 

@@ -27,15 +27,12 @@ const Page = () => {
       setImageLink(result.image_link);
       setOtherPages(result.other_pages);
       setRawResult(result.raw_result);
-      console.log(imageLink);
-      console.log(otherPages);
-      console.log(rawResult);
     };
     fetchData();
   }, []);
 
   return (
-    <div className="flex min-h-screen items-start justify-center gap-2 dark:bg-gray-800">
+    <div className="no-scrollbar flex min-h-screen items-start justify-center gap-2 overflow-y-auto dark:bg-gray-800">
       <NavigationBar />
       <div className="relative top-20 mx-auto w-full max-w-screen-xl p-4">
         {imageLink && otherPages && rawResult ? (
@@ -48,7 +45,9 @@ const Page = () => {
             />
           </div>
         ) : (
-          <div>Loading...</div>
+          <div className="flex h-screen items-center justify-center">
+            <span className="loading loading-bars loading-lg"></span>
+          </div>
         )}
       </div>
     </div>

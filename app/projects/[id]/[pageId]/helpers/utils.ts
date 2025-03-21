@@ -63,7 +63,7 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
 
   newlyAddedBoxes.forEach((box, index) => {
     const { paragraphIndex, lineIndex } =
-      detectWhichLineAndParxagraphDoesTheBoxBelongTo(box, boxes);
+      detectWhichLineAndParagraphDoesTheBoxBelongTo(box, boxes);
     // find all existing boxes that belong to the same line
     const existingBoxesInSameLine = deepCopyOfExistingBoxes.filter(
       (existingBox) => {

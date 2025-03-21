@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { IProject } from "@/app/common/interfaces/interfaces";
+import PublishedBookDetail from "./PublicBookDetail";
+import { convertBackendProjectToFrontendProject } from "@/app/common/helpers/convert_data";
 
 interface Props {
   projectId: string;
@@ -13,21 +16,17 @@ export default function PublishedBookPage(props: Props) {
     const fetchData = async () => {
       const response = await fetch(`/api/published_books/${projectId}`);
       const result = await response.json();
-      setBook(result);
+      if (result.published_book) {
+        setBook(convertBackendProjectToFrontendProject(result.published_book));
+      }
     };
     fetchData();
   }, []);
   return book ? (
-    <div>
-      <h1>{book.project_id}</h1>
-      <p>{book.project_description}</p>
-      <p>{book.project_name}</p>
-      <div>{book.project_belongs_to}</div>
-      <div>
-        <a href={book.epub_download_link}> Download EPUB </a>
-      </div>
-    </div>
+    <PublishedBookDetail project={book} />
   ) : (
-    <div>Loading...</div>
+    <div className="flex h-screen items-center justify-center">
+      <span className="loading loading-bars loading-lg"></span>
+    </div>
   );
 }

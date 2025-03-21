@@ -6,7 +6,8 @@ export async function GET(
 ) {
   const { projectId } = await params;
   const response = await fetch(
-    `${process.env.BACKEND_API}/published_books/${projectId}`,
+    `${process.env.BACKEND_API}/published_books/${parseInt(projectId)}`,
+    { cache: "no-store" },
   );
   const result = await response.json();
   return NextResponse.json(result);

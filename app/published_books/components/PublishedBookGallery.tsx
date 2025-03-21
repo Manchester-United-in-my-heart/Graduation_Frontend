@@ -1,14 +1,15 @@
 "use client";
-import { IProject } from "@/app/common/interfaces/interfaces";
-import FlyonuiScript from "@/app/common/components/FlyonuiScript";
-import HoveringLabel from "./HoveringLabel";
-import { useState } from "react";
 
-interface IModalButtonProps {
+import { IProject } from "@/app/common/interfaces/interfaces";
+import { useEffect, useState } from "react";
+import FlyonuiScript from "@/app/common/components/FlyonuiScript";
+import HoveringLabel from "@/app/projects/components/HoveringLabel";
+
+interface IPublishedBooksProps {
   projects: IProject[] | null;
 }
 
-export default function ModalButton(props: IModalButtonProps) {
+export default function PublishedBooksGallery(props: IPublishedBooksProps) {
   const projects = props.projects;
   const numberOfProjects = projects !== null ? projects.length : 0;
   const carouselProjects =
@@ -44,7 +45,7 @@ export default function ModalButton(props: IModalButtonProps) {
     <>
       <div className="my-4">
         <h1 className="text-center text-4xl font-bold">
-          Danh sách dự án hiện có
+          Danh sách dự án chia sẻ hiện có
         </h1>
       </div>
       <div
@@ -57,7 +58,7 @@ export default function ModalButton(props: IModalButtonProps) {
             {carouselProjects?.map((project, index) => (
               <div className="carousel-slide" key={index}>
                 <a
-                  href={`./projects/${project.id}`}
+                  href={`./published_books/${project.id}`}
                   className="relative flex h-full justify-center"
                 >
                   <img
@@ -87,23 +88,22 @@ export default function ModalButton(props: IModalButtonProps) {
       <div className="mt-4 grid grid-cols-2 gap-4">
         {listProjectsDividedByPages[currentPage]?.length > 0
           ? listProjectsDividedByPages[currentPage]?.map((project, index) => (
-              <div className="flex justify-center" key={index}>
-                <a
-                  href={`./projects/${project.id}`}
-                  className="relative flex w-fit"
-                >
-                  <img
-                    src={`${project.coverImage === null ? "https://i.fbcd.co/products/resized/resized-750-500/da14e415f7efb0c05bcf258aed12153dd6f4e530248b6c16d27d547a0562d146.jpg" : `data:image/png;base64,${project.coverImage}`}`}
-                    className="relative h-96 w-[300px] object-fill"
-                    alt="game"
-                  />
-                  <HoveringLabel project={project} />
-                </a>
-              </div>
+              <a
+                href={`./projects/${project.id}`}
+                className="relative"
+                key={index}
+              >
+                <img
+                  src={`${project.coverImage === null ? "https://i.fbcd.co/products/resized/resized-750-500/da14e415f7efb0c05bcf258aed12153dd6f4e530248b6c16d27d547a0562d146.jpg" : `data:image/png;base64,${project.coverImage}`}`}
+                  className="relative h-96 object-cover"
+                  alt="game"
+                />
+                <HoveringLabel project={project} />
+              </a>
             ))
           : null}
       </div>
-      <div className="mt-4">
+      <div>
         <div>
           <nav className="flex items-center justify-center gap-x-1">
             <button
@@ -139,8 +139,6 @@ export default function ModalButton(props: IModalButtonProps) {
       <FlyonuiScript />
     </>
   ) : (
-    <div className="flex h-screen items-center justify-center">
-      <span className="loading loading-bars loading-lg"></span>
-    </div>
+    <div>Loading ...</div>
   );
 }

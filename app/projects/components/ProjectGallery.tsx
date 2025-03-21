@@ -3,7 +3,6 @@
 import { IProject } from "@/app/common/interfaces/interfaces";
 import { useEffect, useState } from "react";
 import { convertBackendProjectToFrontendProject } from "@/app/common/helpers/convert_data";
-import Image from "next/image";
 import ModalButton from "./ModalButton";
 
 export default function ProjectGallery() {

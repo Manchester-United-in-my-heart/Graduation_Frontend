@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function ModalForm() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -36,6 +37,7 @@ export default function ModalForm() {
   }, []);
 
   const handleSubmit = async (event) => {
+    setIsLoading(true);
     event.preventDefault();
     console.log("Prevented");
     const formDataToSend = new FormData();
@@ -50,6 +52,7 @@ export default function ModalForm() {
       body: formDataToSend,
     });
     const result = await response.json();
+    setIsLoading(false);
     if (result.id) {
       alert("Project created successfully");
       window.location.reload();
@@ -174,7 +177,10 @@ export default function ModalForm() {
                   Close
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Save changes
+                  {isLoading && (
+                    <span className="loading loading-spinner"></span>
+                  )}
+                  Tạo mới
                 </button>
               </div>
             </form>

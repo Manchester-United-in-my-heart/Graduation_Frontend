@@ -21,7 +21,8 @@
     "react": "^18",
     "react-cropper": "^2.3.3",
     "react-dom": "^18",
-    "react-konva": "^19.0.3"
+    "react-konva": "^19.0.3",
+    "recharts": "^2.15.1"
   },
   "devDependencies": {
     "@iconify/json": "^2.2.318",

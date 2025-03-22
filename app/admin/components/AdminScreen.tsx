@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import DashBoard from "./Dashboard";
 
 export default function AdminScreen() {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -21,6 +22,7 @@ export default function AdminScreen() {
       if (result.status === 400) {
         window.location.href = "/login";
       }
+      console.log(result);
       setIsGottenAdminData(result);
     };
 
@@ -32,6 +34,13 @@ export default function AdminScreen() {
       <span className="loading loading-bars loading-lg"></span>
     </div>
   ) : (
-    <div></div>
+    <div>
+      <DashBoard
+        pages={isGottenAdminData.pages}
+        projects={isGottenAdminData.projects}
+        published_books={isGottenAdminData.published_books}
+        users={isGottenAdminData.users}
+      />
+    </div>
   );
 }

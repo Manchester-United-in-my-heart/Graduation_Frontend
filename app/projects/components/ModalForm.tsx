@@ -12,7 +12,7 @@ export default function ModalForm() {
     isAllowedToTrain: false,
   });
 
-  const handleTextAndCheckboxChange = (event) => {
+  const handleTextAndCheckboxChange = (event: any) => {
     const { name, value, type, checked } = event.target;
     setFormData({
       ...formData,
@@ -20,7 +20,7 @@ export default function ModalForm() {
     });
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: any) => {
     const { name, files } = event.target;
     setFormData({
       ...formData,
@@ -36,17 +36,24 @@ export default function ModalForm() {
     setAccessToken(accessToken);
   }, []);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     setIsLoading(true);
     event.preventDefault();
     console.log("Prevented");
     const formDataToSend = new FormData();
-    formDataToSend.append("accessToken", accessToken);
+    if (accessToken) {
+      formDataToSend.append("accessToken", accessToken);
+    }
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("isPublic", formData.isPublic);
-    formDataToSend.append("isAllowedToTrain", formData.isAllowedToTrain);
-    formDataToSend.append("coverImage", formData.coverImage);
+    formDataToSend.append("isPublic", formData.isPublic.toString());
+    formDataToSend.append(
+      "isAllowedToTrain",
+      formData.isAllowedToTrain.toString(),
+    );
+    if (formData.coverImage) {
+      formDataToSend.append("coverImage", formData.coverImage);
+    }
     const response = await fetch("/api/projects/create", {
       method: "POST",
       body: formDataToSend,
@@ -77,7 +84,7 @@ export default function ModalForm() {
         id="form-modal"
         className="overlay modal hidden overlay-open:opacity-100"
         role="dialog"
-        tabIndex="-1"
+        tabIndex={-1}
       >
         <div className="modal-dialog overlay-open:opacity-100">
           <div className="modal-content">

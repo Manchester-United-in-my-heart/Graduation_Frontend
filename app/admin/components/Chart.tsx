@@ -19,7 +19,7 @@ enum FigureType {
 
 interface ChartProps {
   data: any[];
-  type: FigureType;
+  type: FigureType | string;
 }
 
 export default function Chart(props: ChartProps) {

@@ -16,11 +16,13 @@ export default function PublishedBooksGallery(props: IPublishedBooksProps) {
     numberOfProjects > 4 ? projects?.slice(0, 4) : projects;
   const listProjects = numberOfProjects > 4 ? projects?.slice(4) : [];
 
-  const numberOfListProjectPages = Math.ceil(listProjects.length / 6);
+  const numberOfListProjectPages = listProjects ? Math.ceil(listProjects.length / 6) : 0;
 
   const listProjectsDividedByPages = [];
-  for (let i = 0; i < numberOfListProjectPages; i++) {
-    listProjectsDividedByPages.push(listProjects.slice(i * 6, i * 6 + 6));
+  if (listProjects) {
+    for (let i = 0; i < numberOfListProjectPages; i++) {
+      listProjectsDividedByPages.push(listProjects.slice(i * 6, i * 6 + 6));
+    }
   }
 
   const [currentPage, setCurrentPage] = useState(0);

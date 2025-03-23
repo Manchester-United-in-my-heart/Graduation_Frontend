@@ -9,7 +9,7 @@ export default function Register() {
     password: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -17,7 +17,7 @@ export default function Register() {
     }));
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     event.preventDefault();
     const user = {
       displayName: formData.displayName,

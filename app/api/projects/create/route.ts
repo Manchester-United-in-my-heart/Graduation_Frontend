@@ -9,11 +9,14 @@ export async function POST(req: Request) {
   const accessToken = data.get("accessToken");
 
   const formDataToSend = new FormData();
-  formDataToSend.append("name", name);
-  formDataToSend.append("description", description);
-  formDataToSend.append("cover_image", coverImage);
-  formDataToSend.append("is_public", isPublic);
-  formDataToSend.append("is_allow_to_train", isAllowedToTrain);
+  
+  formDataToSend.append("name", name || "");
+  formDataToSend.append("description", description || "");
+  if (coverImage) {
+    formDataToSend.append("cover_image", coverImage);
+  }
+  formDataToSend.append("is_public", isPublic.toString());
+  formDataToSend.append("is_allow_to_train", isAllowedToTrain.toString());
 
   const response = await fetch(`${process.env.BACKEND_API}/projects/`, {
     headers: {

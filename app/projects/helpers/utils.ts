@@ -1,8 +1,8 @@
-export const detectWhichLineDoesTheBoxBelongTo = (box, lines) => {
-  const areaPercentage = [];
+export const detectWhichLineDoesTheBoxBelongTo = (box: any, lines: any) => {
+  const areaPercentage: any[] = [];
   // Calculate the percentage of the area of the box that is covered by each line
-  lines.forEach((paragraph) => {
-    paragraph.forEach((line) => {
+  lines.forEach((paragraph: any) => {
+    paragraph.forEach((line: any) => {
       const position = line;
       const x1 = Math.max(box.x, position.x);
       const y1 = Math.max(box.y, position.y);
@@ -20,12 +20,12 @@ export const detectWhichLineDoesTheBoxBelongTo = (box, lines) => {
   return indexOfMaxAreaPercentage;
 };
 
-const detectWhichLineAndParagraphDoesTheBoxBelongTo = (box, paragraphs) => {
-  const areaPercentage = [];
+const detectWhichLineAndParagraphDoesTheBoxBelongTo = (box: any, paragraphs: any) => {
+  const areaPercentage: any[] = [];
   // Calculate the percentage of the area of the box that is covered by each line
-  paragraphs.forEach((paragraph, paragraphIndex) => {
-    const areaPercentagesOfAParagraph = [];
-    paragraph.lines.forEach((line) => {
+  paragraphs.forEach((paragraph: any, paragraphIndex: any) => {
+    const areaPercentagesOfAParagraph: any[] = [];
+    paragraph.lines.forEach((line: any) => {
       const { position } = line;
       const x1 = Math.max(box.x, position.x);
       const y1 = Math.max(box.y, position.y);
@@ -43,7 +43,7 @@ const detectWhichLineAndParagraphDoesTheBoxBelongTo = (box, paragraphs) => {
   let indexOfMaxAreaPercentage = 0;
   let indexOfMaxAreaPercentageOfLine = 0;
   areaPercentage.forEach((paragraph, paragraphIndex) => {
-    paragraph.forEach((line, lineIndex) => {
+    paragraph.forEach((line: any, lineIndex: any) => {
       if (line > maxAreaPercentage) {
         maxAreaPercentage = line;
         indexOfMaxAreaPercentage = paragraphIndex;
@@ -58,15 +58,15 @@ const detectWhichLineAndParagraphDoesTheBoxBelongTo = (box, paragraphs) => {
   };
 };
 
-export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
+export const getPreviewText = (boxes: any, existingBoxes: any, newlyAddedBoxes: any) => {
   const deepCopyOfExistingBoxes = JSON.parse(JSON.stringify(existingBoxes));
 
-  newlyAddedBoxes.forEach((box, index) => {
+  newlyAddedBoxes.forEach((box: any, index: any) => {
     const { paragraphIndex, lineIndex } =
       detectWhichLineAndParagraphDoesTheBoxBelongTo(box, boxes);
     // find all existing boxes that belong to the same line
     const existingBoxesInSameLine = deepCopyOfExistingBoxes.filter(
-      (existingBox) => {
+      (existingBox: any) => {
         return (
           existingBox.inParagraph === paragraphIndex &&
           existingBox.inLine === lineIndex
@@ -76,7 +76,7 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
 
     // find the position of the newly added box in the line
     let indexInLine = 0;
-    existingBoxesInSameLine.forEach((existingBox) => {
+    existingBoxesInSameLine.forEach((existingBox: any) => {
       if (box.x >= existingBox.x) {
         indexInLine++;
       }
@@ -88,7 +88,7 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
   });
 
   // sort the boxes by paragraph and line and position in line
-  deepCopyOfExistingBoxes.sort((a, b) => {
+  deepCopyOfExistingBoxes.sort((a: any, b: any) => {
     if (a.inParagraph === b.inParagraph) {
       if (a.inLine === b.inLine) {
         return a.positionInLine - b.positionInLine;
@@ -99,10 +99,10 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
   });
 
   // group the boxes by paragraph
-  const paragraphs = [];
-  let currentParagraph = [];
+  const paragraphs: any[] = [];
+  let currentParagraph: any[] = [];
   let currentParagraphIndex = 0;
-  deepCopyOfExistingBoxes.forEach((box) => {
+  deepCopyOfExistingBoxes.forEach((box: any) => {
     if (box.inParagraph === currentParagraphIndex) {
       currentParagraph.push(box);
     } else {
@@ -116,9 +116,9 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
   // group elements in the same line in paragraphs
   paragraphs.forEach((paragraph) => {
     const lines = [];
-    let currentLine = [];
+    let currentLine: any[] = [];
     let currentLineIndex = 0;
-    paragraph.forEach((box) => {
+    paragraph.forEach((box: any) => {
       if (box.inLine === currentLineIndex) {
         currentLine.push(box);
       } else {
@@ -133,8 +133,8 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
 
   // sort the lines in each line in each paragraph by position in line
   paragraphs.forEach((paragraph) => {
-    paragraph.lines.forEach((line) => {
-      line.sort((a, b) => a.positionInLine - b.positionInLine);
+    paragraph.lines.forEach((line: any) => {
+      line.sort((a: any, b: any) => a.positionInLine - b.positionInLine);
     });
   });
 
@@ -142,10 +142,10 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
 
   let previewText = "";
 
-  boxes.forEach((paragraph, paragraphIndex) => {
+  boxes.forEach((paragraph: any, paragraphIndex: any) => {
     if (paragraph.label === "Text") {
       let paragraphText = "";
-      paragraphs[paragraphIndex].forEach((word) => {
+      paragraphs[paragraphIndex].forEach((word: any) => {
         paragraphText += word.word + " ";
       });
       previewText += paragraphText + "\n";
@@ -156,18 +156,18 @@ export const getPreviewText = (boxes, existingBoxes, newlyAddedBoxes) => {
 };
 
 export const getThePositionOfWordGroupByLine = (
-  boxes,
-  existingBoxes,
-  newlyAddedBoxes,
+  boxes: any,
+  existingBoxes: any,
+  newlyAddedBoxes: any,
 ) => {
   const deepCopyOfExistingBoxes = JSON.parse(JSON.stringify(existingBoxes));
 
-  newlyAddedBoxes.forEach((box, index) => {
+  newlyAddedBoxes.forEach((box: any, index: any) => {
     const { paragraphIndex, lineIndex } =
       detectWhichLineAndParagraphDoesTheBoxBelongTo(box, boxes);
     // find all existing boxes that belong to the same line
     const existingBoxesInSameLine = deepCopyOfExistingBoxes.filter(
-      (existingBox) => {
+      (existingBox: any) => {
         return (
           existingBox.inParagraph === paragraphIndex &&
           existingBox.inLine === lineIndex
@@ -177,7 +177,7 @@ export const getThePositionOfWordGroupByLine = (
 
     // find the position of the newly added box in the line
     let indexInLine = 0;
-    existingBoxesInSameLine.forEach((existingBox) => {
+    existingBoxesInSameLine.forEach((existingBox: any) => {
       if (box.x >= existingBox.x) {
         indexInLine++;
       }
@@ -188,11 +188,11 @@ export const getThePositionOfWordGroupByLine = (
     deepCopyOfExistingBoxes.push(box);
   });
 
-  const lines = [];
-  boxes.forEach((paragraph, paragraphIndex) => {
-    paragraph.lines.forEach((line, lineIndex) => {
+  const lines: any[] = [];
+  boxes.forEach((paragraph: any, paragraphIndex: any) => {
+    paragraph.lines.forEach((line: any, lineIndex: any) => {
       const { position } = line;
-      const lineBoxes = deepCopyOfExistingBoxes.filter((box) => {
+      const lineBoxes = deepCopyOfExistingBoxes.filter((box: any) => {
         return box.inParagraph === paragraphIndex && box.inLine === lineIndex;
       });
       lines.push({
@@ -202,7 +202,7 @@ export const getThePositionOfWordGroupByLine = (
     });
   });
 
-  const words = [];
+  const words: any[] = [];
   lines.forEach((line) => {
     words.push(...line.boxes);
   });

@@ -18,6 +18,6 @@ export async function POST(req: Request) {
       return NextResponse.json(await response.json());
     }
   } catch (error) {
-    return NextResponse.error(error);
+    return NextResponse.error();
   }
 }

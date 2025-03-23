@@ -14,10 +14,10 @@ const Paginator = (props: PaginatorProps) => {
     }
   }
   // sort summary by the page number in ascending order
-  summary.sort((a, b) => a.page_number - b.page_number);
+  summary.sort((a: any, b: any) => a.page_number - b.page_number);
   return (
     <div className="flex">
-      {summary.map((page) => (
+      {summary.map((page: any) => (
         <div key={page.id}>
           {page.isCurrent ? (
             <span>{page.page_number}</span>

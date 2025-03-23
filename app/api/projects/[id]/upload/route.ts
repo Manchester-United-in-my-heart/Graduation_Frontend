@@ -7,7 +7,9 @@ export async function POST(req: Request) {
   const id = data.get('projectId');
 
   const formDataToSend = new FormData();
-  formDataToSend.append('files', file);
+  if (file) {
+    formDataToSend.append('files', file);
+  }
 
   const response = await fetch(`${process.env.BACKEND_API}/projects/${id}/upload_images`, {
     headers: {

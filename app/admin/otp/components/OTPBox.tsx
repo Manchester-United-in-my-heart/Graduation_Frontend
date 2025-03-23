@@ -19,7 +19,7 @@ export default function OTP(props: OTPProps) {
   const [isSending, setIsSending] = useState(false);
   const { length } = props;
 
-  const submitHandler = async (event) => {
+  const submitHandler = async (event: any) => {
     setIsSending(true);
     event.preventDefault();
     const otp = value.join("");
@@ -37,32 +37,35 @@ export default function OTP(props: OTPProps) {
       alert("Lỗi");
     } else if (result.status_code === 200) {
       localStorage.setItem("access_token", result.access_token);
-      window.location.href = result.redirect
+      window.location.href = result.redirect;
     }
     console.log(result);
     setIsSending(false);
   };
-  const inputRef = useRef([]);
+  const inputRef = useRef<(HTMLInputElement | null)[]>([]);
   const [value, setValue] = useState(new Array(length).fill(""));
 
-  const onChangeHandler = ({ target: { value: inputValue } }, index) => {
-    if (isNaN(inputValue)) return;
+  const onChangeHandler = (
+    { target: { value: inputValue } }: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    if (isNaN(Number(inputValue))) return;
 
     const newValue = [...value];
     newValue[index] = inputValue.slice(-1);
     setValue(newValue);
 
-    if (inputValue && index < length - 1) inputRef.current[index + 1].focus();
+    if (inputValue && index < length - 1) inputRef.current[index + 1]?.focus();
 
     const finalValue = newValue.join("");
   };
 
-  const onClickHandler = (index) =>
-    inputRef.current[index].setSelectionRange(1, 1);
+  const onClickHandler = (index: any) =>
+    inputRef.current[index]?.setSelectionRange(1, 1);
 
-  const onKeyDownHandler = (e, index) => {
+  const onKeyDownHandler = (e: any, index: any) => {
     if (e.key === "Backspace" && index > 0 && !value[index]) {
-      inputRef.current[index - 1].focus();
+      inputRef.current[index - 1]?.focus();
     }
   };
 
@@ -80,7 +83,7 @@ export default function OTP(props: OTPProps) {
               key={index}
               ref={(input) => (inputRef.current[index] = input)}
               value={item}
-              style={otpCss}
+              style={otpCss as React.CSSProperties}
               placeholder="0"
               onChange={(e) => onChangeHandler(e, index)}
               onClick={() => onClickHandler(index)}

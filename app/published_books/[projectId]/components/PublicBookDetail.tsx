@@ -35,7 +35,11 @@ export default function PublishedBookDetail(props: IPublishedBook) {
       <div className="flex justify-center">
         <button
           onClick={() => {
-            window.open(project.epubDownloadLink, "_blank");
+            if (project.epubDownloadLink) {
+              window.open(project.epubDownloadLink, "_blank");
+            } else {
+              console.error("Epub download link is not available.");
+            }
           }}
           className="btn btn-primary btn-soft"
         >

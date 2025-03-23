@@ -28,13 +28,13 @@ export default function DashBoard(props: DashboardProps) {
   const { pages, projects, published_books, users } = props;
   const [currentTimeRange, setCurrentTimeRange] = useState<string>("days");
   const [currentFigure, setCurrentFigure] = useState<string>("users");
-  const handleSelectTimeRange = (event) => {
+  const handleSelectTimeRange = (event: any) => {
     setCurrentTimeRange(event.target.value);
   };
 
   const [isSending, setIsSending] = useState(false);
 
-  const handleSelectFigure = (event) => {
+  const handleSelectFigure = (event: any) => {
     setCurrentFigure(event.target.value);
   };
 

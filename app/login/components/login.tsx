@@ -6,7 +6,7 @@ export default function Login() {
     password: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -14,7 +14,7 @@ export default function Login() {
     }));
   };
 
-  const loginHandler = async (event) => {
+  const loginHandler = async (event: any) => {
     event.preventDefault();
     const response = await fetch("/api/login", {
       method: "POST",

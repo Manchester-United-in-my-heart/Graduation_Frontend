@@ -7,7 +7,8 @@ import NavigationBar from "@/app/common/components/NavigationBar";
 
 const Page = () => {
   const params = useParams();
-  const { id, pageId } = params;
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+  const pageId = Array.isArray(params.pageId) ? params.pageId[0] : params.pageId;
   const [imageLink, setImageLink] = useState<string | null>(null);
   const [otherPages, setOtherPages] = useState<any[] | null>(null);
   const [rawResult, setRawResult] = useState<any[] | null>(null);

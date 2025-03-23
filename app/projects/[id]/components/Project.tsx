@@ -29,7 +29,7 @@ export default function Project(props: Props) {
 
   const [file, setFile] = useState<File | null>(null);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: any) => {
     setFile(event.target.files[0]);
   };
 
@@ -104,14 +104,18 @@ export default function Project(props: Props) {
     setShowUploadModal(!showUploadModal);
   };
 
-  const handleUploadFile = async (event) => {
+  const handleUploadFile = async (event: any) => {
     event.preventDefault();
     setIsUploading(true);
     const accessToken = localStorage.getItem("access_token");
     const formData = new FormData();
-    formData.append("accessToken", accessToken);
+    if (accessToken) {
+      formData.append("accessToken", accessToken);
+    }
     formData.append("projectId", projectId);
-    formData.append("file", file);
+    if (file) {
+      formData.append("file", file);
+    }
     const response = await fetch(`/api/projects/${projectId}/upload`, {
       method: "POST",
       body: formData,

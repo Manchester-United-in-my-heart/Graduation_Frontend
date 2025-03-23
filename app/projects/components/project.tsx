@@ -26,9 +26,15 @@ interface PredictedWord {
   word: string;
 }
 
-const Project = ({ imageUrl, boxes }) => {
-  const listOfExistedBoxesFromProps = [];
-  const paragraphPositions = boxes.map((paragraph) => {
+interface Props {
+  imageUrl: any;
+  boxes: any;
+}
+
+const Project = (props: Props) => {
+  const { imageUrl, boxes } = props;
+  const listOfExistedBoxesFromProps: any[] = [];
+  const paragraphPositions = boxes.map((paragraph: any) => {
     const { bbox } = paragraph;
     return {
       x: bbox[0],
@@ -37,8 +43,8 @@ const Project = ({ imageUrl, boxes }) => {
       height: bbox[3] - bbox[1],
     };
   });
-  const linePositions = boxes.map((paragraph) => {
-    return paragraph.lines.map((line) => {
+  const linePositions = boxes.map((paragraph: any) => {
+    return paragraph.lines.map((line: any) => {
       const { position } = line;
       return {
         x: position.x,
@@ -48,9 +54,9 @@ const Project = ({ imageUrl, boxes }) => {
       };
     });
   });
-  boxes.map((part, paragraphIndex) => {
-    part.lines.forEach((line, lineIndex) => {
-      line.words.forEach((word, wordIndex) => {
+  boxes.map((part: any, paragraphIndex: any) => {
+    part.lines.forEach((line: any, lineIndex: any) => {
+      line.words.forEach((word: any, wordIndex: any) => {
         const { position, texts } = word;
         listOfExistedBoxesFromProps.push({
           x: position.x,
@@ -71,7 +77,7 @@ const Project = ({ imageUrl, boxes }) => {
   );
   const [listOfNewBoxes, setListOfNewBoxes] = useState<Rect[]>([]);
   const [rect, setRect] = useState<Rect | null>(null);
-  const [currentHighlightBox, setCurrentHighlightBox] = useState<int | null>(
+  const [currentHighlightBox, setCurrentHighlightBox] = useState<Rect | null>(
     null,
   );
   const [isExistingWordChanged, setIsExistingWordChanged] =
@@ -90,33 +96,43 @@ const Project = ({ imageUrl, boxes }) => {
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.drawImage(image, 0, 0);
+      context?.clearRect(0, 0, canvas.width, canvas.height);
+      context?.drawImage(image, 0, 0);
 
       // Function to redraw everything, including hovered text
-      const redraw = (hoveredBox = null) => {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, 0);
+      const redraw = (hoveredBox: Rect | null = null) => {
+        context?.clearRect(0, 0, canvas.width, canvas.height);
+        context?.drawImage(image, 0, 0);
 
         // Draw existing boxes
         listOfExistedBoxes.forEach((box) => {
-          context.strokeStyle = "red";
-          context.lineWidth = 2;
-          context.strokeRect(box.x, box.y, box.width, box.height);
+          if (context) {
+            context.strokeStyle = "red";
+            context.lineWidth = 2;
+            context.strokeRect(box.x, box.y, box.width, box.height);
+          }
         });
 
         // Draw new boxes
         listOfNewBoxes.forEach((box) => {
-          context.strokeStyle = "blue";
-          context.lineWidth = 2;
-          context.strokeRect(box.x, box.y, box.width, box.height);
+          if (context) {
+            context.strokeStyle = "blue";
+            context.lineWidth = 2;
+            context.strokeRect(box.x, box.y, box.width, box.height);
+          }
         });
 
         // If a box is hovered, display the word
         if (hoveredBox) {
-          context.font = "16px Arial";
-          context.fillStyle = "black";
-          context.fillText(hoveredBox.word, hoveredBox.x, hoveredBox.y - 5); // Display above the box
+          if (context) {
+            context.font = "16px Arial";
+            context.fillStyle = "black";
+            context.fillText(
+              hoveredBox.word ? hoveredBox.word : "",
+              hoveredBox.x,
+              hoveredBox.y - 5,
+            ); // Display above the box
+          }
         }
       };
 
@@ -131,7 +147,7 @@ const Project = ({ imageUrl, boxes }) => {
         const y = clientY - rect.top;
 
         // Find the hovered box
-        const hoveredBox = listOfExistedBoxes.find(
+        const hoveredBox: Rect | undefined = listOfExistedBoxes.find(
           (box) =>
             x >= box.x &&
             x <= box.x + box.width &&
@@ -140,7 +156,7 @@ const Project = ({ imageUrl, boxes }) => {
         );
 
         if (hoveredBox !== null) {
-          if (currentHighlightBox !== -1) {
+          if (currentHighlightBox !== null) {
             listOfExistedBoxes.forEach((box, index) => {
               const input = document.getElementById(`existed-box-${index}`);
               if (input) {
@@ -149,9 +165,11 @@ const Project = ({ imageUrl, boxes }) => {
             });
           }
           // remove the highlight from the input box
-          setCurrentHighlightBox(hoveredBox);
+          setCurrentHighlightBox(hoveredBox || null);
           // highlight the input box with the id `existed-box-${index}`
-          const index = listOfExistedBoxes.indexOf(hoveredBox);
+          const index = hoveredBox
+            ? listOfExistedBoxes.indexOf(hoveredBox)
+            : -1;
           const input = document.getElementById(`existed-box-${index}`);
           if (input) {
             input.style.backgroundColor = "yellow";
@@ -166,7 +184,7 @@ const Project = ({ imageUrl, boxes }) => {
     };
   }, [imageUrl, listOfExistedBoxes, listOfNewBoxes]);
 
-  const handleMouseDown = (event) => {
+  const handleMouseDown = (event: any) => {
     const { clientX, clientY } = event;
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const rect = canvas.getBoundingClientRect();
@@ -175,7 +193,7 @@ const Project = ({ imageUrl, boxes }) => {
     setRect({ x, y, width: 0, height: 0 });
   };
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = (event: any) => {
     if (rect) {
       const { clientX, clientY } = event;
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -191,26 +209,32 @@ const Project = ({ imageUrl, boxes }) => {
       image.src = imageUrl;
 
       image.onload = () => {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(image, 0, 0);
+        context?.clearRect(0, 0, canvas.width, canvas.height);
+        context?.drawImage(image, 0, 0);
 
         // Redraw existing boxes
         listOfExistedBoxes.forEach((box) => {
-          context.strokeStyle = "red";
-          context.lineWidth = 2;
-          context.strokeRect(box.x, box.y, box.width, box.height);
+          if (context) {
+            context.strokeStyle = "red";
+            context.lineWidth = 2;
+            context.strokeRect(box.x, box.y, box.width, box.height);
+          }
         });
 
         listOfNewBoxes.forEach((box) => {
-          context.strokeStyle = "blue";
-          context.lineWidth = 2;
-          context.strokeRect(box.x, box.y, box.width, box.height);
+          if (context) {
+            context.strokeStyle = "blue";
+            context.lineWidth = 2;
+            context.strokeRect(box.x, box.y, box.width, box.height);
+          }
         });
 
         // Draw the temporary rectangle
-        context.strokeStyle = "green"; // Temporary box color
-        context.lineWidth = 2;
-        context.strokeRect(rect.x, rect.y, width, height);
+        if (context) {
+          context.strokeStyle = "green"; // Temporary box color
+          context.lineWidth = 2;
+          context.strokeRect(rect.x, rect.y, width, height);
+        }
       };
 
       setRect({ ...rect, width, height });
@@ -226,11 +250,11 @@ const Project = ({ imageUrl, boxes }) => {
     }
   };
 
-  const handleDeleteNewlyDrawnBox = (index) => {
+  const handleDeleteNewlyDrawnBox = (index: any) => {
     setListOfNewBoxes((prevBoxes) => prevBoxes.filter((box, i) => i !== index));
   };
 
-  const handleDeleteExistedBox = (index) => {
+  const handleDeleteExistedBox = (index: any) => {
     setListOfExistedBoxes((prevBoxes) =>
       prevBoxes.filter((box, i) => i !== index),
     );
@@ -261,11 +285,11 @@ const Project = ({ imageUrl, boxes }) => {
     console.log(linesWillSendToServer);
   };
 
-  const handleExistingWordChange = (index) => {
+  const handleExistingWordChange = (index: any) => {
     const input = document.getElementById(`existed-box-${index}`)?.children[0];
     if (input) {
       setIsExistingWordChanged(true);
-      const word = input.value;
+      const word = (input as HTMLInputElement).value;
       console.log(word);
       setListOfExistedBoxes((prevBoxes) =>
         prevBoxes.map((box, i) => {
@@ -278,12 +302,12 @@ const Project = ({ imageUrl, boxes }) => {
     }
   };
 
-  const handleNewlyDrawnWordChange = (index) => {
+  const handleNewlyDrawnWordChange = (index: any) => {
     console.log(index);
     const input = document.getElementById(`new-box-${index}`)?.children[0];
     console.log(input);
     if (input) {
-      const word = input.value;
+      const word = (input as HTMLInputElement).value;
       console.log(word);
       setListOfNewBoxes((prevBoxes) =>
         prevBoxes.map((box, i) => {
@@ -337,9 +361,7 @@ const Project = ({ imageUrl, boxes }) => {
             ))}
           </ul>
           {isExistingWordChanged && (
-            <button
-              onClick={() => handleSaveAllExistingBoxes(listOfExistedBoxes)}
-            >
+            <button onClick={() => handleSaveAllExistingBoxes()}>
               Save All Existing Boxes
             </button>
           )}
@@ -387,8 +409,8 @@ const Project = ({ imageUrl, boxes }) => {
           Preview
           <textarea
             name="preview"
-            rows="10"
-            cols="50"
+            rows={10}
+            cols={50}
             value={previewText}
             readOnly={true}
           />

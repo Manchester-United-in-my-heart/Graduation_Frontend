@@ -16,6 +16,7 @@ export default function Login() {
 
   const loginHandler = async (event: any) => {
     event.preventDefault();
+    console.log(formData);
     const response = await fetch("/api/login", {
       method: "POST",
       body: JSON.stringify(formData),

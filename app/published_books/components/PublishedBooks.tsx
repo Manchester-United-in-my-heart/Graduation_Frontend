@@ -8,7 +8,10 @@ export default function PublishedBooks() {
   const [projects, setProjects] = useState<IProject[] | null>(null);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/published_books`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/published_books`,
+        { cache: "no-store" },
+      );
       const result = await response.json();
       if (result.published_books) {
         setProjects(
@@ -27,6 +30,6 @@ export default function PublishedBooks() {
   ) : (
     <div className="flex h-screen items-center justify-center">
       <span className="loading loading-bars loading-lg"></span>
-    </div>  
+    </div>
   );
 }

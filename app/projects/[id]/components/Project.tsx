@@ -37,10 +37,16 @@ export default function Project(props: Props) {
     const accessToken = localStorage.getItem("access_token");
 
     const fetchData = async () => {
-      const response = await fetch(`/api/projects/${projectId}`, {
-        method: "POST",
-        body: JSON.stringify({ accessToken }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/projects/${projectId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          cache: "no-store",
+        },
+      );
       const result = await response.json();
       setProjectData(
         result.project
@@ -71,10 +77,15 @@ export default function Project(props: Props) {
   const handleRequestFile = async () => {
     setIsRequesting(true);
     const accessToken = localStorage.getItem("access_token");
-    const response = await fetch(`/api/projects/${projectId}/request`, {
-      method: "POST",
-      body: JSON.stringify({ accessToken }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/projects/${projectId}/request_epub_file`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
     const result = await response.json();
     setIsRequesting(false);
     if (result.download_link) {
@@ -109,17 +120,19 @@ export default function Project(props: Props) {
     setIsUploading(true);
     const accessToken = localStorage.getItem("access_token");
     const formData = new FormData();
-    if (accessToken) {
-      formData.append("accessToken", accessToken);
-    }
-    formData.append("projectId", projectId);
     if (file) {
-      formData.append("file", file);
+      formData.append("files", file);
     }
-    const response = await fetch(`/api/projects/${projectId}/upload`, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/projects/${projectId}/upload_images`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formData,
+      },
+    );
     const result = await response.json();
     setIsUploading(false);
     if (result.filenames) {

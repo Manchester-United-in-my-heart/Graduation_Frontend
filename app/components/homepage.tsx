@@ -9,10 +9,15 @@ export function Homepage() {
     setAccessToken(token || "notfound");
   }, []);
   const getMe = async (accessToken: string) => {
-    const response = await fetch("/api/me", {
-      method: "POST",
-      body: JSON.stringify({ accessToken }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/users/me`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
     const result = await response.json();
     if (result.error) {
       localStorage.removeItem("access_token");

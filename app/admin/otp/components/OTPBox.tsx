@@ -27,10 +27,17 @@ export default function OTP(props: OTPProps) {
     if (!accessToken) {
       window.location.href = "/login";
     }
-    const response = await fetch("/api/admin/otp", {
-      method: "POST",
-      body: JSON.stringify({ otp, accessToken }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/admin_login`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ otp }),
+        cache: "no-store",
+      },
+    );
 
     const result = await response.json();
     if (result.status === 400) {

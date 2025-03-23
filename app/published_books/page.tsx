@@ -15,7 +15,9 @@ const PublishedBooksPage = () => {
   const [projects, setProjects] = useState<any[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/published_books`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/published_books`,
+      );
       const result = await response.json();
       if (result.published_books) {
         setProjects(

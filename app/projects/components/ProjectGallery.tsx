@@ -13,10 +13,16 @@ export default function ProjectGallery() {
       window.location.href = "/login";
     }
     const fetchProjects = async () => {
-      const response = await fetch("/api/projects", {
-        method: "POST",
-        body: JSON.stringify({ accessToken }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/projects/`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          cache: "no-store",
+        },
+      );
       const result = await response.json();
       setProjects(
         result.map((project: any) =>

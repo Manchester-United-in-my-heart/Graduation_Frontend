@@ -345,15 +345,18 @@ const PageInProject = (props: Props) => {
       listOfNewBoxes,
     );
     const sendUpdateRequestToServer = async () => {
-      const response = await fetch(`/api/pages/update`, {
-        method: "POST",
-        body: JSON.stringify({
-          projectId: projectId,
-          pageId: pageId,
-          accessToken: accessToken,
-          updatedText: linesWillSendToServer,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/projects/${projectId}/pages/${pageId}/update`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            updatedText: linesWillSendToServer,
+          }),
+        },
+      );
       const result = await response.json();
       setIsLoading(false);
       if (result.message && result.message === "Updated successfully") {

@@ -14,7 +14,10 @@ export default function PublishedBookPage(props: Props) {
   const [book, setBook] = useState<any | null>(null);
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`/api/published_books/${projectId}`);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/published_books/${parseInt(projectId)}`,
+        { cache: "no-store" },
+      );
       const result = await response.json();
       if (result.published_book) {
         setBook(convertBackendProjectToFrontendProject(result.published_book));

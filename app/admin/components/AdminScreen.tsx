@@ -14,10 +14,16 @@ export default function AdminScreen() {
     }
 
     const fetchAdminData = async () => {
-      const response = await fetch("/api/admin", {
-        method: "POST",
-        body: JSON.stringify({ accessToken: token }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/secret/get_dashboard_data`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          cache: "no-store",
+        },
+      );
       const result = await response.json();
       if (result.status === 400) {
         window.location.href = "/login";

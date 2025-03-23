@@ -41,23 +41,27 @@ export default function ModalForm() {
     event.preventDefault();
     console.log("Prevented");
     const formDataToSend = new FormData();
-    if (accessToken) {
-      formDataToSend.append("accessToken", accessToken);
-    }
+
     formDataToSend.append("name", formData.name);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("isPublic", formData.isPublic.toString());
+    formDataToSend.append("is_public", formData.isPublic.toString());
     formDataToSend.append(
-      "isAllowedToTrain",
+      "is_allowed_to_train",
       formData.isAllowedToTrain.toString(),
     );
     if (formData.coverImage) {
-      formDataToSend.append("coverImage", formData.coverImage);
+      formDataToSend.append("cover_image", formData.coverImage);
     }
-    const response = await fetch("/api/projects/create", {
-      method: "POST",
-      body: formDataToSend,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/projects/`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: formDataToSend,
+      },
+    );
     const result = await response.json();
     setIsLoading(false);
     if (result.id) {

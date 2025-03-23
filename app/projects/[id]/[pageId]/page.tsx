@@ -8,7 +8,9 @@ import NavigationBar from "@/app/common/components/NavigationBar";
 const Page = () => {
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
-  const pageId = Array.isArray(params.pageId) ? params.pageId[0] : params.pageId;
+  const pageId = Array.isArray(params.pageId)
+    ? params.pageId[0]
+    : params.pageId;
   const [imageLink, setImageLink] = useState<string | null>(null);
   const [otherPages, setOtherPages] = useState<any[] | null>(null);
   const [rawResult, setRawResult] = useState<any[] | null>(null);
@@ -16,14 +18,16 @@ const Page = () => {
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     const fetchData = async () => {
-      const response = await fetch(`/api/pages`, {
-        method: "POST",
-        body: JSON.stringify({
-          accessToken: accessToken,
-          projectId: id,
-          pageId: pageId,
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/projects/${id}/pages/${pageId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          cache: "no-store",
+        },
+      );
       const result = await response.json();
       setImageLink(result.image_link);
       setOtherPages(result.other_pages);

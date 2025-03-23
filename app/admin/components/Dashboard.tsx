@@ -90,10 +90,16 @@ export default function DashBoard(props: DashboardProps) {
     if (!accessToken) {
       window.location.href = "/login";
     }
-    const response = await fetch("/api/admin/train", {
-      method: "POST",
-      body: JSON.stringify({ accessToken }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}/secret/train`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      },
+    );
     const result = await response.json();
     if (result.status === 400) {
       alert("Lỗi");

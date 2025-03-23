@@ -17,9 +17,12 @@ export default function Login() {
   const loginHandler = async (event: any) => {
     event.preventDefault();
     console.log(formData);
-    const response = await fetch("/api/login", {
+    const form = new FormData();
+    form.append("username", formData.username);
+    form.append("password", formData.password);
+    const response = await fetch(`${process.env.BACKEND_API}/token`, {
       method: "POST",
-      body: JSON.stringify(formData),
+      body: form,
     });
     const result = await response.json();
     if (result.access_token) {

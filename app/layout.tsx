@@ -19,6 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <ThemeModeScript />
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
       </head>
       <body className={inter.className}>{children}</body>
     </html>

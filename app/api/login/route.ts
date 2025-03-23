@@ -9,6 +9,10 @@ export async function POST(req: Request) {
       method: "POST",
       body: form,
     });
+    const result = await response.json();
+
+    console.log(result);
+
     return NextResponse.json(await response.json());
   } catch (error) {
     return NextResponse.error();

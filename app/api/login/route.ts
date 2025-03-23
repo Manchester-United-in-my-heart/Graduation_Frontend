@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const token = await req.json();
+
+  console.log("Before sending data");
+  console.log(token);
+
   const form = new FormData();
   form.append("username", token.username);
   form.append("password", token.password);

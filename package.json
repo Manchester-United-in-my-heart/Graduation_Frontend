@@ -13,7 +13,7 @@
   "dependencies": {
     "@aws-amplify/adapter-nextjs": "^1.5.6",
     "aws-amplify": "^6.13.6",
-    "axios": "^1.7.9",
+    "axios": "^1.8.4",
     "cropperjs": "^2.0.0-rc.2",
     "flowbite": "^3.1.2",
     "flowbite-react": "^0.8.0",

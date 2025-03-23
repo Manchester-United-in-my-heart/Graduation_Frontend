@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import axiosInstance from "@/lib/axiosInstance";
 export default function Login() {
   const [formData, setFormData] = useState({
     username: "",
@@ -20,6 +21,16 @@ export default function Login() {
     const form = new FormData();
     form.append("username", formData.username);
     form.append("password", formData.password);
+
+    axiosInstance
+      .post("/token", form)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     const response = await fetch(`${process.env.BACKEND_API}/token`, {
       method: "POST",
       body: form,

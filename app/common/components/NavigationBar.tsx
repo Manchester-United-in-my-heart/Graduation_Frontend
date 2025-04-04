@@ -7,20 +7,14 @@ export default function NavigationBar(props: NavigationBarProps) {
   return (
     <nav className="fixed start-0 top-0 z-20 w-full border-b border-gray-200 bg-white dark:border-gray-600 dark:bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-        <a
-          href="https://flowbite.com/"
-          className="flex items-center space-x-3 rtl:space-x-reverse"
-        >
+        <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <Image
-            width={32}
+            width={200}
             height={32}
-            src="https://flowbite.com/docs/images/logo.svg"
+            src="/Logo.svg"
             className="h-8"
             alt="Flowbite Logo"
           />
-          <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
-            Flowbite
-          </span>
         </a>
         <div className="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
           {props.isLoggedIn === false && (

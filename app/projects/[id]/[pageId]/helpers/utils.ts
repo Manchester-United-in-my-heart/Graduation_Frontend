@@ -151,7 +151,11 @@ export const getPreviewText = (
 
   let textTypeParagraphIterator = 0;
   boxes.forEach((paragraph: any) => {
-    if (paragraph.label === "Text" || paragraph.label === "SectionHeader") {
+    if (
+      paragraph.label === "Text" ||
+      paragraph.label === "SectionHeader" ||
+      paragraph.label === "Caption"
+    ) {
       let paragraphText = "";
       paragraphs[textTypeParagraphIterator].forEach((word: any) => {
         paragraphText += word.word + " ";

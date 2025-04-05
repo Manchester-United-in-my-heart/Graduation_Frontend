@@ -515,7 +515,7 @@ const PageInProject = (props: Props) => {
               </button>
               <div
                 id="delivery-popout-collapse"
-                className="accordion-content hidden max-h-[300px] w-full overflow-hidden transition-[height] duration-300"
+                className="accordion-content hidden max-h-[300px] w-full overflow-y-scroll transition-[height] duration-300"
                 aria-labelledby="delivery-popout"
                 role="region"
               >

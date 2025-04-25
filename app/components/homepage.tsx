@@ -19,7 +19,7 @@ export function Homepage() {
       },
     );
     const result = await response.json();
-    if (result.error) {
+    if (result.detail == "Invalid token") {
       localStorage.removeItem("access_token");
       window.location.href = "/login";
     }
